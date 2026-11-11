@@ -194,7 +194,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
       <a href="#gia">Bảng giá</a>
       <a href="#hoi-dap">Hỏi đáp</a>
       <a href="#them">Thêm</a>
-      <a href="#tu-van">Tư vấn</a>
     </nav>
     <a class="btn btn-cta" href="#dung-thu">Dùng thử miễn phí</a>
   </div>
@@ -561,67 +560,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
   </div>
 </section>
 
-<section id="tu-van" aria-labelledby="tv-h">
-  <div class="wrap">
-    <div class="kicker">Tư vấn đăng ký gói</div>
-    <h2 id="tv-h" style="margin-top:10px">Để lại thông tin, chúng tôi liên hệ trong ngày làm việc.</h2>
-    <p class="lede">Cho biết bạn làm việc ở đâu, dùng Revit phiên bản nào và quan tâm gói nào. Tác giả sẽ tư vấn cách chọn gói và hướng dẫn chuyển khoản.</p>
-
-    <div style="margin-top:28px">
-      <form class="lead" id="lead-form" novalidate>
-        <div class="row">
-          <div class="field">
-            <label for="f-name">Họ và tên *</label>
-            <input id="f-name" name="name" maxlength="80" autocomplete="name" required placeholder="Ví dụ: Nguyễn Văn A">
-          </div>
-          <div class="field">
-            <label for="f-contact">Số Zalo hoặc điện thoại *</label>
-            <input id="f-contact" name="contact" maxlength="20" inputmode="tel" required placeholder="Ví dụ: 0912 345 678">
-          </div>
-        </div>
-        <div class="row">
-          <div class="field">
-            <label for="f-email">Email <span class="hint">(không bắt buộc)</span></label>
-            <input id="f-email" name="email" type="email" maxlength="120" autocomplete="email" placeholder="ten@email.com">
-          </div>
-          <div class="field">
-            <label for="f-goi">Gói quan tâm</label>
-            <select id="f-goi" name="goi">
-              <option value="">Chưa chọn, cần tư vấn</option>
-              <option value="Dùng thử">Dùng thử miễn phí 30 ngày</option>
-              <option value="1 tháng">1 tháng · 49.000 đ</option>
-              <option value="6 tháng">6 tháng · 249.000 đ</option>
-              <option value="12 tháng">12 tháng · 449.000 đ</option>
-              <option value="Vĩnh viễn">Vĩnh viễn · 990.000 đ</option>
-            </select>
-          </div>
-        </div>
-        <div class="row">
-          <div class="field">
-            <label for="f-rv">Phiên bản Revit <span class="hint">(không bắt buộc)</span></label>
-            <select id="f-rv" name="revit">
-              <option value="">Chọn phiên bản</option>
-              <option>Revit 2022</option><option>Revit 2023</option><option>Revit 2024</option>
-              <option>Revit 2025</option><option>Revit 2026</option><option>Revit 2027</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="f-note">Lời nhắn <span class="hint">(không bắt buộc)</span></label>
-            <textarea id="f-note" name="note" maxlength="500" placeholder="Bạn cần hỗ trợ điều gì?"></textarea>
-          </div>
-        </div>
-        <div class="field check">
-          <input id="f-consent" name="consent" type="checkbox" required>
-          <label for="f-consent">Tôi đồng ý để KTS. Nguyễn Trọng Khải dùng thông tin trên để liên hệ tư vấn gói SSspeed. Thông tin không được chia sẻ cho bên thứ ba. *</label>
-        </div>
-        <div class="lead-foot">
-          <p class="lead-status" id="lead-status" role="status" aria-live="polite"></p>
-          <button class="btn btn-cta" type="submit" id="lead-submit">Gửi yêu cầu tư vấn</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</section>
 
 <section aria-labelledby="cta-h" style="padding-top:20px">
   <div class="wrap">
@@ -670,97 +608,6 @@ document.querySelectorAll('[data-copy]').forEach(function(btn){
     }
   });
 });
-</script>
-<script>
-// Form tư vấn: ghi vào database của trang, mỗi người 1 yêu cầu (khoá = id người dùng).
-(function(){
-  var form = document.getElementById('lead-form');
-  var statusEl = document.getElementById('lead-status');
-  var submit = document.getElementById('lead-submit');
-  var ZALO = '0346 413 770';
-
-  function say(msg, kind){ statusEl.textContent = msg; statusEl.className = 'lead-status' + (kind ? ' ' + kind : ''); }
-  function fallbackText(){
-    return 'Chưa gửi được qua trang này. Vui lòng nhắn Zalo ' + ZALO + ' kèm họ tên và số điện thoại.';
-  }
-  function errorText(code){
-    switch(code){
-      case 'invalid_argument': return 'Thông tin chưa hợp lệ. Kiểm tra lại các ô đánh dấu *.';
-      case 'resource_exhausted': return 'Hệ thống đang bận. Thử lại sau ít phút.';
-      case 'quota_exceeded': return 'Trang đã nhận quá nhiều yêu cầu. Vui lòng nhắn Zalo ' + ZALO + '.';
-      case 'revoked': return 'Bạn không còn quyền gửi trên trang này. Vui lòng nhắn Zalo ' + ZALO + '.';
-      default: return 'Chưa gửi được. Thử lại hoặc nhắn Zalo ' + ZALO + '.';
-    }
-  }
-  function showDone(when){
-    form.innerHTML = '<div class="lead-done"><b>Đã nhận yêu cầu của bạn</b>' +
-      '<span>Tác giả sẽ liên hệ qua số bạn đã để lại. Nếu cần gấp, nhắn Zalo ' + ZALO + '.</span>' +
-      (when ? '<span class="hint" style="color:var(--muted);font-size:13px">Gửi lúc ' + when + '</span>' : '') + '</div>';
-  }
-  function clean(s){ return String(s || '').replace(/\s+/g, ' ').trim(); }
-
-  async function start(){
-    var db = null, user = null;
-    try {
-      if (window.claude && window.claude.use) {
-        db = await window.claude.use('db');
-        user = await window.claude.use('user');
-      }
-    } catch (e) { db = null; }
-    if (!db || !user) {
-      submit.disabled = true;
-      say(fallbackText(), 'err');
-      return;
-    }
-    var uid = null;
-    try { uid = await user.id(); } catch (e) { uid = null; }
-    if (!uid) { submit.disabled = true; say(fallbackText(), 'err'); return; }
-
-    // Đã gửi trước đó thì hiện trạng thái, không cho gửi lại.
-    try {
-      var snap = await db.doc('leads/' + uid).get();
-      if (snap.exists) {
-        var d = snap.data() || {};
-        showDone(d.created ? new Date(d.created).toLocaleString('vi-VN') : '');
-        return;
-      }
-    } catch (e) { /* không đọc được thì vẫn cho gửi */ }
-
-    var canWrite = null;
-    try { canWrite = await user.can('data.write'); } catch (e) { canWrite = null; }
-    if (canWrite === false) {
-      submit.disabled = true;
-      say('Form này dành cho thành viên được cấp quyền Contributor. Vui lòng nhắn Zalo ' + ZALO + ' để đăng ký gói.', 'err');
-      return;
-    }
-    form.addEventListener('submit', async function(ev){
-      ev.preventDefault();
-      say('');
-      var name = clean(form.elements['name'].value), contact = clean(form.contact.value);
-      if (!name || !contact) { say('Vui lòng điền họ tên và số Zalo hoặc điện thoại.', 'err'); return; }
-      if (!form.consent.checked) { say('Vui lòng đồng ý để được liên hệ tư vấn.', 'err'); return; }
-      submit.disabled = true; submit.textContent = 'Đang gửi...';
-      var body = {
-        name: name,
-        contact: contact,
-        email: clean(form.email.value),
-        goi: form.goi.value || 'Chưa chọn',
-        revit: form.revit.value || '',
-        note: clean(form.note.value),
-        created: new Date().toISOString()
-      };
-      try {
-        await db.doc('leads/' + uid).set(body);
-        showDone(new Date().toLocaleString('vi-VN'));
-      } catch (e) {
-        say(errorText(e && e.code), 'err');
-        submit.disabled = false; submit.textContent = 'Gửi yêu cầu tư vấn';
-      }
-    });
-    submit.disabled = false;
-  }
-  start();
-})();
 </script>
 </body>
 </html>
