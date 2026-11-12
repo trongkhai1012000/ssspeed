@@ -1,0 +1,15 @@
+{
+  "product": "SSspeed",
+  "current_version": "1.0.0.0",
+  "updated": "2026-11-12",
+  "installer_name": "SSspeed-Setup-v1.0.0.0-20261112.exe",
+  "download_url": "https://drive.google.com/drive/folders/1BCFdauI6GZJOyBRDgG9FGWVTbTIQyUWc?usp=sharing",
+  "revit": [
+    { "year": "2022", "supported": true, "note": "" },
+    { "year": "2023", "supported": true, "note": "" },
+    { "year": "2024", "supported": true, "note": "" },
+    { "year": "2025", "supported": true, "note": "" },
+    { "year": "2026", "supported": true, "note": "" },
+    { "year": "2027", "supported": true, "note": "" }
+  ]
+}
